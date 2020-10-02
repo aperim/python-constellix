@@ -51,8 +51,28 @@ class Protocol(object):
 
         self.__session = None
 
-    async def api_get(self, path=None, params=None, json=None, headers=None):
+    async def api_get(self, path=None, params=None, headers=None):
         """Make a GET request to the Constellix API
+
+        Attributes:
+            path (str): The path to the endpoint
+            params (str): Any URL paramaters to pass
+            headers (dict): Headers to be sent in the request
+        """
+
+        if path:
+            if not path.startswith("/"):
+                path = f"/{path}"
+        else:
+            path = ""
+
+        url = f"{self.__api_url}{path}"
+        return await self.__loop.run_in_executor(
+            None, self.__request, "GET", url, params, None, headers
+        )
+
+    async def api_post(self, path=None, params=None, json=None, headers=None):
+        """Make a POST request to the Constellix API
 
         Attributes:
             path (str): The path to the endpoint
@@ -69,7 +89,49 @@ class Protocol(object):
 
         url = f"{self.__api_url}{path}"
         return await self.__loop.run_in_executor(
-            None, self.__request, "GET", url, params, json, headers
+            None, self.__request, "POST", url, params, json, headers
+        )
+
+    async def api_put(self, path=None, params=None, json=None, headers=None):
+        """Make a PUT request to the Constellix API
+
+        Attributes:
+            path (str): The path to the endpoint
+            params (str): Any URL paramaters to pass
+            json (str): JSON to be passed in the body
+            headers (dict): Headers to be sent in the request
+        """
+
+        if path:
+            if not path.startswith("/"):
+                path = f"/{path}"
+        else:
+            path = ""
+
+        url = f"{self.__api_url}{path}"
+        return await self.__loop.run_in_executor(
+            None, self.__request, "PUT", url, params, json, headers
+        )
+
+    async def api_delete(self, path=None, params=None, json=None, headers=None):
+        """Make a DELETE request to the Constellix API
+
+        Attributes:
+            path (str): The path to the endpoint
+            params (str): Any URL paramaters to pass
+            json (str): JSON to be passed in the body
+            headers (dict): Headers to be sent in the request
+        """
+
+        if path:
+            if not path.startswith("/"):
+                path = f"/{path}"
+        else:
+            path = ""
+
+        url = f"{self.__api_url}{path}"
+        return await self.__loop.run_in_executor(
+            None, self.__request, "DELETE", url, params, json, headers
         )
 
     def __get_session(self):

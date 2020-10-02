@@ -1,6 +1,6 @@
 # Python Library for Constellix API
 
-![Publish to PyPI](https://github.com/aperim/python-constellix/workflows/Publish%20Python%20%F0%9F%90%8D%20distributions%20%F0%9F%93%A6%20to%20PyPI%20and%20TestPyPI/badge.svg) [![GitHub issues](https://img.shields.io/github/issues/aperim/python-constellix?style=plastic)](https://github.com/aperim/python-constellix/issues) [![GitHub forks](https://img.shields.io/github/forks/aperim/python-constellix?style=plastic)](https://github.com/aperim/python-constellix/network) [![GitHub stars](https://img.shields.io/github/stars/aperim/python-constellix?style=plastic)](https://github.com/aperim/python-constellix/stargazers) [![GitHub license](https://img.shields.io/github/license/aperim/python-constellix?style=plastic)](https://github.com/aperim/python-constellix/blob/main/LICENSE.txt) [![Twitter](https://img.shields.io/twitter/url?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2Faperim%2Fpython-constellix)
+![PyPI](https://github.com/aperim/python-constellix/workflows/Publish%20Python%20%F0%9F%90%8D%20distributions%20%F0%9F%93%A6%20to%20PyPI%20and%20TestPyPI/badge.svg?branch=main) [![GitHub issues](https://img.shields.io/github/issues/aperim/python-constellix?style=plastic)](https://github.com/aperim/python-constellix/issues) [![GitHub forks](https://img.shields.io/github/forks/aperim/python-constellix?style=plastic)](https://github.com/aperim/python-constellix/network) [![GitHub stars](https://img.shields.io/github/stars/aperim/python-constellix?style=plastic)](https://github.com/aperim/python-constellix/stargazers) [![GitHub license](https://img.shields.io/github/license/aperim/python-constellix?style=plastic)](https://github.com/aperim/python-constellix/blob/main/LICENSE.txt) [![Twitter](https://img.shields.io/twitter/url?style=social)](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Faperim%2Fpython-constellix&via=%40troykelly&text=Access%20the%20Constellix%20DNS%20API%20From%20Python&hashtags=%23python%20%23devops%20%23dns%20%23api)
 
 ## Description
 
@@ -21,14 +21,14 @@ This library uses `logging` just set the log level and format you need.
 
 ## Example
 
-Set API access information (or can be passed directly)
+### Set up environment
 
 ```bash
 export CONSTELLIX_APISECRET=48d4ebb7-246e-406a-b272-2e174a3bdf35
 export CONSTELLIX_APIKEY=b6f11837-9858-4f7f-8b3f-50057355e8e9
 ```
 
-Get a list of all domains in account
+### List all domains in account
 
 ```python
 from constellix import Constellix
@@ -46,6 +46,36 @@ api = Constellix(api_key=api_key, secret_key=secret_key, loop=loop)
 loop.run_until_complete(list_all_domains(api))
 ```
 
+### Search for a domain
+
+```python
+domains = await api.domains.search("example")
+```
+
+```python
+domains = await api.domains.search_startswith("example")
+```
+
+```python
+domains = await api.domains.search_endswith("com")
+```
+
+```python
+domains = await api.domains.search_exact("example.com")
+```
+
+### Create a new domain
+
+```python
+domain = await api.domains.create("example.com")
+```
+
+#### And then delete it
+
+```python
+delete_success = await domain.delete()
+```
+
 ## Support
 
-[![buymeacoffee](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png)](https://www.buymeacoffee.com/troykelly)
+[![buymeacoffee](https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png | width=100)](https://www.buymeacoffee.com/troykelly)

@@ -24,6 +24,27 @@ class Domains(object):
                 )
         return self.__domains
 
+    async def fetch(self, domain_id):
+        constellix_payload = await self.__protocol.api_get(path=f"domains/{domain_id}")
+        if not constellix_payload:
+            return None
+        self.__domains[constellix_payload["name"]] = Domain(
+            protocol=self.__protocol, constellix_payload=constellix_payload
+        )
+        return self.__domains[constellix_payload["name"]]
+
+    async def create(self, name, template=None):
+        payload = {"names": [name]}
+        if template:
+            payload["template"] = template
+        domain_creation = await self.__protocol.api_post(path="domains", json=payload)
+        if not (domain_creation and domain_creation[0]):
+            return None
+        new_domain = domain_creation[0]
+        if not new_domain["id"]:
+            return None
+        return await self.fetch(new_domain["id"])
+
     async def __search(self, search_type="exact", search=""):
         query = {search_type: search}
         all_domains = await self.__protocol.api_get(path="domains/search", params=query)
@@ -144,6 +165,21 @@ class Domain(object):
             if "contactIds" in constellix_payload
             else None
         )
+
+    async def delete(self):
+        if not self.__id:
+            return None
+
+        constellix_payload = await self.__protocol.api_delete(
+            path=f"domains/{self.__id}"
+        )
+        if not constellix_payload:
+            return None
+
+        if not "success" in constellix_payload:
+            return False
+
+        return True
 
     @property
     def soa(self):
