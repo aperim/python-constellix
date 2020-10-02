@@ -3,8 +3,8 @@ import asyncio
 import logging
 import os
 
-from ..protocol.protocol import Protocol
-from ..protocol.domains import Domains
+from ..protocol import Protocol
+from ..domains import Domains
 
 _LOGGER = logging.getLogger(__name__)
 
